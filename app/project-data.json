@@ -1,0 +1,46 @@
+{
+  "projects": [
+    {
+      "name": "Octo Deploy Pipeline",
+      "owner": "mona",
+      "status": "On track",
+      "recentActivity": "Rolled out canary deploys to the staging cluster",
+      "priority": "High"
+    },
+    {
+      "name": "Contributor Onboarding Guide",
+      "owner": "hubot",
+      "status": "At risk",
+      "recentActivity": "Blocked on the legal review of the code of conduct",
+      "priority": "High"
+    },
+    {
+      "name": "Docs Search Revamp",
+      "owner": "octocat",
+      "status": "In progress",
+      "recentActivity": "Shipped the new relevance ranking behind a flag",
+      "priority": "Medium"
+    },
+    {
+      "name": "Design System Tokens",
+      "owner": "octodex",
+      "status": "In progress",
+      "recentActivity": "Migrated the color tokens to the shared palette",
+      "priority": "Medium"
+    },
+    {
+      "name": "Nightly Build Cleanup",
+      "owner": "monalisa",
+      "status": "Complete",
+      "recentActivity": "Archived the last of the legacy nightly jobs",
+      "priority": "Low"
+    },
+    {
+      "name": "Issue Triage Automation",
+      "owner": "mona",
+      "status": "Paused",
+      "recentActivity": "Paused while the triage labels are reorganized",
+      "priority": "Low"
+    }
+  ]
+}

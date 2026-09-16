@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project Pulse</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="dashboard">
+      <header class="dashboard-header">
+        <h1 class="dashboard-title">Project Pulse</h1>
+        <p class="dashboard-subtitle">
+          A quick read on what Mona's team is working on: who owns each project,
+          where it stands, what moved recently, and how urgent it is.
+        </p>
+      </header>
+
+      <main>
+        <h2 class="visually-hidden">Projects</h2>
+        <div class="project-grid" id="project-grid" aria-live="polite">
+          <p class="state-message">Loading projects…</p>
+        </div>
+      </main>
+
+      <footer class="dashboard-footer">
+        <p>Data source: <code>project-data.json</code></p>
+      </footer>
+    </div>
+
+    <template id="project-card-template">
+      <article class="project-card">
+        <header class="project-card-header">
+          <h3 class="project-name"></h3>
+          <span class="status-badge"></span>
+        </header>
+        <dl class="project-meta">
+          <div class="project-meta-row">
+            <dt>Owner</dt>
+            <dd class="project-owner"></dd>
+          </div>
+          <div class="project-meta-row">
+            <dt>Status</dt>
+            <dd class="project-status"></dd>
+          </div>
+          <div class="project-meta-row">
+            <dt>Recent activity</dt>
+            <dd class="project-activity"></dd>
+          </div>
+          <div class="project-meta-row">
+            <dt>Priority</dt>
+            <dd class="project-priority"></dd>
+          </div>
+        </dl>
+      </article>
+    </template>
+
+    <script>
+      // Turn a free-text value such as "On track" or "High" into a class suffix
+      // so the stylesheet can colour badges without knowing the exact wording.
+      function toModifier(value) {
+        return String(value)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      }
+
+      function setText(card, selector, value, fallback) {
+        card.querySelector(selector).textContent = value || fallback;
+      }
+
+      function buildCard(project) {
+        const template = document.getElementById("project-card-template");
+        const card = template.content.firstElementChild.cloneNode(true);
+
+        setText(card, ".project-name", project.name, "Untitled project");
+        setText(card, ".project-owner", project.owner, "Unassigned");
+        setText(card, ".project-status", project.status, "Unknown");
+        setText(
+          card,
+          ".project-activity",
+          project.recentActivity,
+          "No recent activity"
+        );
+        setText(card, ".project-priority", project.priority, "Unset");
+
+        const badge = card.querySelector(".status-badge");
+        badge.textContent = project.status || "Unknown";
+        badge.classList.add("status-" + toModifier(project.status || "unknown"));
+
+        const priority = card.querySelector(".project-priority");
+        priority.classList.add(
+          "priority-" + toModifier(project.priority || "unset")
+        );
+
+        return card;
+      }
+
+      function showMessage(grid, message) {
+        grid.replaceChildren();
+        const paragraph = document.createElement("p");
+        paragraph.className = "state-message";
+        paragraph.textContent = message;
+        grid.append(paragraph);
+      }
+
+      function render(grid, projects) {
+        if (!Array.isArray(projects) || projects.length === 0) {
+          showMessage(grid, "No projects are being tracked yet.");
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        projects.forEach(function (project) {
+          fragment.append(buildCard(project));
+        });
+        grid.replaceChildren(fragment);
+      }
+
+      async function loadProjects() {
+        const grid = document.getElementById("project-grid");
+
+        try {
+          const response = await fetch("project-data.json");
+          if (!response.ok) {
+            throw new Error("Request failed with status " + response.status);
+          }
+          const data = await response.json();
+          render(grid, data.projects);
+        } catch (error) {
+          showMessage(
+            grid,
+            "Could not load project-data.json (" +
+              error.message +
+              "). Run the dashboard from the Run Project Pulse Dashboard " +
+              "launch configuration so the file is served over HTTP."
+          );
+        }
+      }
+
+      loadProjects();
+    </script>
+  </body>
+</html>

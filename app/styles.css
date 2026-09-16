@@ -1,0 +1,258 @@
+/* Project Pulse dashboard styling
+   Owned by the Designer agent. The markup in index.html targets the class
+   contract defined here: .dashboard, .project-card, .status-badge, and the
+   priority modifiers. */
+
+:root {
+  --surface: #ffffff;
+  --surface-muted: #f6f8fa;
+  --page: #eef2f6;
+  --border: #d8dee4;
+  --text: #1f2328;
+  --text-muted: #59636e;
+  --accent: #0969da;
+
+  --status-on-track: #1a7f37;
+  --status-in-progress: #0969da;
+  --status-at-risk: #bc4c00;
+  --status-paused: #59636e;
+  --status-complete: #6639ba;
+
+  --priority-high: #b35900;
+  --priority-medium: #0969da;
+  --priority-low: #59636e;
+
+  --radius-card: 12px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(31, 35, 40, 0.08),
+    0 6px 16px rgba(31, 35, 40, 0.06);
+  --shadow-card-hover: 0 2px 4px rgba(31, 35, 40, 0.1),
+    0 12px 28px rgba(31, 35, 40, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--page);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Layout container for the whole dashboard. */
+.dashboard {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px 56px;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-title {
+  margin: 0 0 8px;
+  font-size: 2.25rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.dashboard-subtitle {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* One card per project. */
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 150ms ease, transform 150ms ease;
+}
+
+.project-card:hover,
+.project-card:focus-within {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.project-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.project-name {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.status-badge {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.status-badge.status-on-track {
+  background: #dafbe1;
+  border-color: #aceebb;
+  color: var(--status-on-track);
+}
+
+.status-badge.status-in-progress {
+  background: #ddf4ff;
+  border-color: #b6e3ff;
+  color: var(--status-in-progress);
+}
+
+.status-badge.status-at-risk {
+  background: #fff1e5;
+  border-color: #ffd8b5;
+  color: var(--status-at-risk);
+}
+
+.status-badge.status-paused {
+  background: var(--surface-muted);
+  border-color: var(--border);
+  color: var(--status-paused);
+}
+
+.status-badge.status-complete {
+  background: #fbefff;
+  border-color: #ecd8ff;
+  color: var(--status-complete);
+}
+
+.project-meta {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.project-meta-row {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.project-meta dt {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.project-meta dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  overflow-wrap: anywhere;
+}
+
+.project-priority {
+  font-weight: 600;
+}
+
+.project-priority.priority-high {
+  color: var(--priority-high);
+}
+
+.project-priority.priority-medium {
+  color: var(--priority-medium);
+}
+
+.project-priority.priority-low {
+  color: var(--priority-low);
+}
+
+.state-message {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-card);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.dashboard-footer {
+  margin-top: 32px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.dashboard-footer code {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 24px 16px 40px;
+  }
+
+  .dashboard-title {
+    font-size: 1.75rem;
+  }
+
+  .project-meta-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transition: none;
+  }
+
+  .project-card:hover,
+  .project-card:focus-within {
+    transform: none;
+  }
+}
